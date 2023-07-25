@@ -27,7 +27,7 @@ function App() {
       years: years
     }).then(() => {
       getEmployees();
-      alert( 'Employee registered successfully!');
+      clearnFields();
     });
   }
 
@@ -41,8 +41,18 @@ function App() {
       years: years
     }).then(() => {
       getEmployees();
-      alert('updated successfully!');
+      clearnFields();
     });
+  }
+
+  const clearnFields = () => {
+    setYears("");
+    setName("");
+    setPost("");
+    setAge("");
+    setCountry("");
+    setId("");
+    setEdit(false);
   }
 
   const editEmployye = (val) => {
@@ -125,7 +135,7 @@ function App() {
           edit? 
           <div>
             <button className='btn btn-warning m-2' onClick={update}>Update</button>
-            <button className='btn btn-info m-2' onClick={add}>Cancel</button>
+            <button className='btn btn-info m-2' onClick={clearnFields}>Cancel</button>
           </div>
           :<button className='btn btn-success' onClick={add}>Save data</button>
         }
