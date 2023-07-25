@@ -51,15 +51,17 @@ app.put('/update',(req,res) => {
     const post = req.body.post;
     const years = req.body.years;
 
-    db.query('UPDATE employees SET (name =?, age=?, country=?, post=?, years=?) WHERE id=?',[name, age, country, post, years,id],
-    (err, result) => {
-        if (err) {
+    db.query(
+        'UPDATE employees SET name=?, age=?, country=?, post=?, years=? WHERE id=?',
+        [name, age, country, post, years, id],
+        (err, result) => {
+          if (err) {
             console.log(err);
-        } else {
-            res.send('Employee update successfully!');
+          } else {
+            res.send('Employee updated successfully!');
+          }
         }
-    }
-    );
+      );      
 });
 
 

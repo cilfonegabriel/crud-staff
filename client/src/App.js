@@ -7,11 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
 
   const [name, setName] = useState("");
-  const [age, setAge] = useState(0);
+  const [age, setAge] = useState();
   const [country, setCountry] = useState("");
   const [post, setPost] = useState("");
-  const [years, setYears] = useState(0);
-  const [id, setId] = useState(0);
+  const [years, setYears] = useState();
+  const [id, setId] = useState();
 
 
   const [edit, setEdit] = useState(false);
@@ -28,6 +28,20 @@ function App() {
     }).then(() => {
       getEmployees();
       alert( 'Employee registered successfully!');
+    });
+  }
+
+  const update = () => {
+    Axios.put('http://localhost:3001/update',{
+      id: id,
+      name: name,
+      age: age,
+      country: country,
+      post: post,
+      years: years
+    }).then(() => {
+      getEmployees();
+      alert('updated successfully!');
     });
   }
 
@@ -107,7 +121,14 @@ function App() {
 
       </div>
       <div className="card-footer text-body-secondary">
-      <button className='btn btn-success' onClick={add}>Save data</button>
+        {
+          edit? 
+          <div>
+            <button className='btn btn-warning m-2' onClick={update}>Update</button>
+            <button className='btn btn-info m-2' onClick={add}>Cancel</button>
+          </div>
+          :<button className='btn btn-success' onClick={add}>Save data</button>
+        }
 
       </div>
     </div>
@@ -126,32 +147,35 @@ function App() {
         </tr>
       </thead>
       <tbody>
-
-        {
-          employeesList.map((val,key)=>{
-            return <tr key={val.id}>
-                    <th> {val.id} </th>
-                    <td> {val.name} </td>
-                    <td> {val.age} </td>
-                    <td> {val.country} </td>
-                    <td> {val.post} </td>
-                    <td> {val.years} </td>
-                    <td>
-
-                    </td>
-                    <div className="btn-group" role="group" aria-label="Basic example">
-                      <button type="button"
-                      onClick={() =>{
-                        editEmployye(val);
-                      }}
-                      
-                      className="btn btn-info">Edit</button>
-                      <button type="button" className="btn btn-danger">Delete</button>
-                    </div>
-                  </tr>
-
-          })
-        }
+        {employeesList.map((val, key) => {
+          return (
+            <tr key={val.id}>
+              <th> {val.id} </th>
+              <td> {val.name} </td>
+              <td> {val.age} </td>
+              <td> {val.country} </td>
+              <td> {val.post} </td>
+              <td> {val.years} </td>
+              <td>
+                {/* Move the buttons here */}
+                <div className="btn-group" role="group" aria-label="Basic example">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      editEmployye(val);
+                    }}
+                    className="btn btn-info"
+                  >
+                    Edit
+                  </button>
+                  <button type="button" className="btn btn-danger">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
     </div>
