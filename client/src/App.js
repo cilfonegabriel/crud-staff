@@ -35,7 +35,13 @@ function App() {
         html: "<i>The employee <strong>"+ name + "</strong> was loaded successfully!</i>",
         icon: 'success',
         timer: 3000
-      })
+      }).catch(function(error){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: JSON.parse(JSON.stringify(error)).message==="Network error"?"Try later":JSON.parse(JSON.stringify(error)).message
+        })
+      });
     });
   }
 
@@ -55,7 +61,47 @@ function App() {
         html: "<i>The employee <strong>"+ name + "</strong> was updated  successfully!</i>",
         icon: 'success',
         timer: 3000
-      })
+      }).catch(function(error){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: JSON.parse(JSON.stringify(error)).message==="Network error"?"Try later":JSON.parse(JSON.stringify(error)).message
+        })
+      });
+    });
+  }
+
+  const deleteEmployee = (val) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      html: "<i>Do you want to delete <strong>"+ val.name + "</strong> ? </i>",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.delete(`http://localhost:3001/delete/${val.id}`,{}).then(() => {
+          getEmployees();
+          clearnFields();
+          Swal.fire(
+            {
+              icon: 'success',
+              title: val.name+' was removed.',
+              showConfirmButton: false,
+              timer: 2000
+            }
+          );
+        }).catch(function(error){
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Could not delete!',
+            footer: JSON.parse(JSON.stringify(error)).message==="Network error"?"Try later":JSON.parse(JSON.stringify(error)).message
+          })
+        });
+      }
     });
   }
 
@@ -188,13 +234,10 @@ function App() {
                     onClick={() => {
                       editEmployye(val);
                     }}
-                    className="btn btn-info"
-                  >
-                    Edit
-                  </button>
-                  <button type="button" className="btn btn-danger">
-                    Delete
-                  </button>
+                    className="btn btn-info">Edit</button>
+                  <button type="button" onClick={()=>{
+                    deleteEmployee(val);
+                  }} className="btn btn-danger">Delete</button>
                 </div>
               </td>
             </tr>
