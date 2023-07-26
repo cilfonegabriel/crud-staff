@@ -3,6 +3,8 @@ import { useState } from "react";
 import Axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Swal from 'sweetalert2'
+
 
 function App() {
 
@@ -28,6 +30,12 @@ function App() {
     }).then(() => {
       getEmployees();
       clearnFields();
+      Swal.fire({
+        title:"<strong>Successful registration! </strong>",
+        html: "<i>The employee <strong>"+ name + "</strong> was loaded successfully!</i>",
+        icon: 'success',
+        timer: 3000
+      })
     });
   }
 
@@ -42,6 +50,12 @@ function App() {
     }).then(() => {
       getEmployees();
       clearnFields();
+      Swal.fire({
+        title:"<strong> successful update! </strong>",
+        html: "<i>The employee <strong>"+ name + "</strong> was updated  successfully!</i>",
+        icon: 'success',
+        timer: 3000
+      })
     });
   }
 
